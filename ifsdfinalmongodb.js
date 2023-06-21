@@ -5,7 +5,7 @@ const uri = 'mongodb+srv://rachanams54:mongodbpwd@cluster0.yxo5ugx.mongodb.net/?
 
 // Database and collection names
 const dbName = 'finalcost';
-const collectionName = 'finalcostt';
+const collectionName = 'costs';
 
 // Connect to MongoDB
 async function connect() {
