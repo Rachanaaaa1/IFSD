@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      class Route {
+        constructor(route) {
+          this.route = route;
+          this.legs = [];
+        }
+
+        addLeg(leg) {
+          this.legs.push(leg);
+        }
+      }
+
+      class NLegs {
+        constructor() {
+          this.routes = [];
+        }
+
+        addRoute(route) {
+          this.routes.push(route);
+        }
+
+        deleteRoute(index) {
+          this.routes.splice(index, 1);
+        }
+
+        loadTable() {
+          const tableElement = document.getElementById('table');
+          tableElement.innerHTML = '';
+
+          const headerRowElement = document.createElement('tr');
+          headerRowElement.appendChild(createElement('th', 'Route'));
+          headerRowElement.appendChild(createElement('th', 'Legs'));
+          headerRowElement.appendChild(createElement('th', 'Cost'));
+          tableElement.appendChild(headerRowElement);
+
+          for (let i = 0; i < this.routes.length; i++) {
+            const route = this.routes[i];
+            const rowElement = document.createElement('tr');
+            rowElement.appendChild(createElement('td', route.route));
+            rowElement.appendChild(createElement('td', JSON.stringify(route.legs)));
+            rowElement.appendChild(createElement('td', route.routeCost));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.onclick = function() {
+              nLegs.deleteRoute(i);
+              nLegs.loadTable();
+            };
+            rowElement.appendChild(createElement('td')).appendChild(deleteButton);
+            tableElement.appendChild(rowElement);
+          }
+        }
+      }
+
+      const nLegs = new NLegs();
+
+      function addNewRoute() {
+        const newRouteNumber = nLegs.routes.length + 1;
+        const newRouteInstance = new Route(newRouteNumber);
+
+        const legCount = parseFloat(prompt('Enter the number of legs: '));
+
+        let routeCost = 0;
+
+        for (let j = 0; j < legCount; j++) {
+          const cityA = prompt('Enter the first city: ');
+          const cityB = prompt('Enter the second city: ');
+          const cost = parseFloat(prompt('Enter the cost for this leg: '));
+          routeCost += cost;
+
+          const leg = { cityA, cityB, cost };
+          newRouteInstance.addLeg(leg);
+        }
+
+        newRouteInstance.routeCost = routeCost;
+        nLegs.addRoute(newRouteInstance);
+        nLegs.loadTable();
+      }
+
+      function createElement(tag, text) {
+        const element = document.createElement(tag);
+        element.innerText = text;
+        return element;
+      }
+    </script>
+  </head>
+
+  <body onload="nLegs.loadTable();">
+    <h1>Route List</h1>
+    <table id="table"></table>
+    <hr>
+    <div>
+      <h1>New Route</h1>
+      <button onclick="addNewRoute();">Add Route</button>
+    </div>
+  </body>
+</html>
